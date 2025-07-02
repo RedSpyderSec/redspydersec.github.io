@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>RedSpyder - Vulnerabilidad RouterOS</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🕷️ RedSpyder Blog Técnico</h1>
+    <p>Explotación silenciosa en redes reales</p>
+    <nav>
+      <a href="index.html">← Volver al Blog</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>📌 Explotación de vulnerabilidad de RouterOS en entidad educativa</h2>
+
+    <p>Durante una evaluación de seguridad ofensiva, se identificó un router Mikrotik expuesto con versión desactualizada de <strong>RouterOS</strong>, que además permitía acceso al servicio <code>winbox</code> desde IPs públicas.</p>
+
+    <h3>🔍 Observaciones</h3>
+    <ul>
+      <li>Versión vulnerable: RouterOS 6.42.9</li>
+      <li>Servicio Winbox abierto en puerto 8291</li>
+      <li>SNMP activado sin filtrado</li>
+      <li>Acceso a backup de configuración (.backup) sin contraseña</li>
+    </ul>
+    <ul>
+      <li> 👾 Dato: No solo permite acceder a credenciales actuales de administración, sino que también permite acceder a credenciales antiguas.
+    </ul>
+
+    
+    <h3>⚙️ Explotación realizada</h3>
+
+<p>
+Durante la auditoría, se utilizó un script desarrollado en Python 3 capaz de explotar una vulnerabilidad conocida en <strong>RouterOS</strong> (versiones <code>&lt; 6.43</code>) que afecta al servicio <code>Winbox</code>. 
+El proceso de explotación consta de las siguientes etapas:
+</p>
+
+<ol>
+  <li><strong>Conexión al servicio Winbox</strong> en el puerto TCP 8291 del router objetivo.</li>
+  <li><strong>Envío de un paquete "hello"</strong> para iniciar sesión y obtener el <code>session ID</code>.</li>
+  <li><strong>Construcción dinámica del payload de explotación</strong> utilizando el session ID recuperado.</li>
+  <li><strong>Envió del exploit</strong> al router, el cual responde con una estructura binaria interna que contiene los usuarios y contraseñas cifradas.</li>
+  <li><strong>Parcheo y parsing del binario</strong>: se identifican los bloques que contienen credenciales y se extraen los campos relevantes usando marcadores binarios específicos.</li>
+  <li><strong>Descifrado de contraseñas</strong> usando una clave derivada con MD5 a partir del nombre de usuario y una clave estática conocida (<code>"283i4jfkai3389"</code>).</li>
+</ol>
+
+<p>
+Como resultado, se recuperaron múltiples credenciales de administración en texto plano, permitiendo acceso total al dispositivo afectado.
+</p>
+
+<pre><code>
+# python3 RouterOS.py 172.17.80.1
+Explotando ... 
+Target --> 172.17.80.1
+Puerto --> 8291
+Exploit Exitoso!
+
+Usuario --> Admin
+Contraseña --> P455w0rd
+
+Usuario --> Admin
+Contraseña --> 
+
+</code></pre>
+
+    <h3>🎯 Riesgos</h3>
+    <ul>
+      <li>Control completo del tráfico de red local</li>
+      <li>Modificación o redirección de rutas</li>
+      <li>Pivoting hacia infraestructura interna</li>
+    </ul>
+
+    <h3>💡 Recomendaciones</h3>
+    <ol>
+      <li>Actualizar a la última versión de RouterOS</li>
+      <li>Desactivar Winbox si no es necesario o filtrarlo por IP</li>
+      <li>Cifrar y proteger backups con contraseñas fuertes</li>
+      <li>Auditar regularmente configuraciones de red</li>
+    </ol>
+
+    <p><em> ⚠️ Este writeup está basado en una simulación o entorno similar a casos reales. No se revelan datos sensibles ni nombres de entidades involucradas.</em></p>
+  </main>
+
+  <footer>
+    <p>Publicado por RedSpyder Security | contacto.spyder@gmail.com</p>
+  </footer>
+</body>
+</html>
