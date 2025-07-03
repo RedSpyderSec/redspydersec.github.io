@@ -73,3 +73,15 @@ footer {
 .blog-button:hover {
     backgound-color: #b3000e;
 }
+.tools-button {
+    backgound-color: #444;
+    color: #fff;
+    padding: 10px 16px;
+    border-radius:  8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+}
+.tools-button:hover {
+    backgounds-color: #e60012;
+}
