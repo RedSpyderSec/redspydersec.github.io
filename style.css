@@ -85,3 +85,25 @@ footer {
 .tools-button:hover {
     backgounds-color: #e60012;
 }
+
+.download-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background: linear-gradient(135deg, #00ff88, #007755);
+  color: black;
+  font-family: "Courier New", monospace;
+  font-weight: bold;
+  font-size: 16px;
+  text-decoration: none;
+  border: 2px solid #00ff88;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ff88, 0 0 20px #007755;
+  transition: all 0.2s ease-in-out;
+}
+
+.download-btn:hover {
+  background: black;
+  color: #00ff88;
+  box-shadow: 0 0 15px #00ff88, 0 0 25px #00ff88;
+  transform: scale(1.05);
+}
