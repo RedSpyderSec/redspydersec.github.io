@@ -208,27 +208,32 @@
         <li>El uso repetido de los mismos servicios de acortamiento puede resultar en bloqueos</li>
       </ul>
     </div>
+
+    <main>
+    <section>
+        <h2>Descarga Disponible</h2>
+        <p>Descarga el paquete completo de herramientas para tus pruebas de seguridad:</p>
+        
+        <div class="downloads-grid">
+            <div class="download-card">
+                <h3>RedMask - RedSpyder</h3>
+                <p>RedMask-X (Windows y Linux)</p>
+                <button class="btn download-btn" onclick="descargarArchivo('RedMask-X.exe', 'RedMask - X')">
+    Descargar Paquete
+</button>
+                <button class="btn info-btn" onclick="window.location.href='https://redspydersec.github.io/Tools/RedSpyder/redmask.html'">Más Información</button>
+            </div>
+        </div>
+    </section>
     
-    <div class="categories-grid">
-      <div class="category-card" onclick="window.location.href='https://redspydersec.github.io/Tools/RedSpyder/redmask.html'">
-        <h3> RedMask-X </h3>
-        <p>Herramienta escrita en Python3, con el propósito de poder enmascarar urls y capturar información del objetivo. </p>
-      </div>
-      <div class="category-card" onclick="window.location.href='index.html'">
-        <h3>🔍 Análisis de Vulnerabilidades</h3>
-        <p>Escáneres y herramientas de identificación de puntos débiles en sistemas</p>
-      </div>
-      
-      <div class="category-card" onclick="window.location.href='index.html'">
-        <h3>⚡ Explotación</h3>
-        <p>Utilidades para explotar vulnerabilidades identificadas en sistemas objetivo</p>
-      </div>
-      
-      <div class="category-card" onclick="window.location.href='index.html'">
-        <h3>🕵️ Post-Explotación</h3>
-        <p>Herramientas para mantener acceso y movimiento lateral una vez comprometido un sistema</p>
-      </div>
-    </div>
+    <section class="tool-info" id="infoPanel" style="display: none;">
+        <h3 id="infoTitle">Información del Paquete</h3>
+        <p id="infoContent">El paquete contiene todas las herramientas en un solo archivo comprimido.</p>
+        <button class="btn info-btn" onclick="ocultarInfo()">Cerrar</button>
+    </section>
+</main>
+
+   
   </main>
 
   <footer>
