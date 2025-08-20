@@ -1,1 +1,239 @@
-<h5>Hacking is my Life</h5>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/x-icon" href="../../../../spyder.ico">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RedMask - RedSpyder Security</title>
+  <link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+  <header>
+    <h1>🕷️ RedSpyder - RedMask v1.3</h1>
+    <p>👾 Herramienta avanzada de enmascaramiento de URLs y recolección de información</p>
+    <nav>
+      <a href="../../../../index.html">⬅️ Volver al Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="tool-details">
+      <h2>¿Qué es RedMask?</h2>
+      <p>RedMask es una herramienta ofensiva escrita en Python3 diseñada para operaciones de ingeniería social. Su propósito principal es enmascarar URLs legítimas y capturar información valiosa de los objetivos que interactúan con los enlaces generados.</p>
+      
+      <div class="screenshot">
+        <p><em>Captura de la interfaz de RedMask</em></p>
+        <!-- Espacio para imagen (simulado con caracteres ASCII) -->
+        <div class="code-block" style="text-align: center; background-color: #000;">
+          <pre style="color: #e94560; background: transparent;">
+        %%%%%%%%%%%%%%%*#%%%%%%%%%%%%%%%%%%%%%*#%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%**%%%%%%%%%%%%%%%%%%%%%%#*#%%%%%%%%%%%%%
+        %%%%%%%%%%%%%**%%%%%%%%%%%%%%%%%%%%%%%%#+#%%%%%%%%%%%%
+        %%%%%%%%%%%%*+#%%%%%%%%%#****#%%%%%%%%%%*+#%%%%%%%%%%%
+        %%%%%%%%%%%#**%%%%%%%%%#*******%%%%%%%%%***%%%%%%%%%%%
+        %%%%%%%%%%%#**%%%%%%%%#*********%%%%%%%%#**%%%%%%%%%%%
+        %%%%%%%%%%%#***#%%%%%#***********%%%%%%#***%%%%%%%%%%%
+        %%%%%%%%%##%#****#%%%%**********#%%%%#***#%%#%%%%%%%%%
+        %%%%%%%%%%#*#%%#***#%%#*********#%#****#%%##%%%%%%%%%%
+        %%%%%%%%%%%%#*#%%#***##*********#***##%#**#%%%%%%%%%%%
+        %%%%%%%%%%%%%#***###**************####**#%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%#***********************#%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%#######************#######%%%%%%%%%%%%%%
+        %%%%%%%%%%%%#****************************#%%%%%%%%%%%%
+        %%%%%%%%%%%***#%%%#****************#%%%#***#%%%%%%%%%%
+        %%%%%%%%%#**#%%%#***#*************#**#%%%#*+*%%%%%%%%%
+        %%%%%%%%**#%%%#***#%#*************%%#**#%%%#**#%%%%%%%
+        %%%%%%%#*%%%%***#%%%#************#%%%%#**#%%%#*%%%%%%%
+        %%%%%%%*#%%%#**%%%%%%%#*********#%%%%%%***%%%%*#%%%%%%
+        %%%%%%##%%%%#**%%%%%%%%#******#%%%%%%%%***%%%%%*%%%%%%
+        %%%%%%#%%%%%#**%%%%%%%%%%#***#%%%%%%%%%***%%%%%%#%%%%%
+        %%%%%%%%%%%%%**#%%%%%%%%%%%#%%%%%%%%%%%**#%%%%%%%%%%%%
+        %%%%%%%%%%%%%%#*#%%%%%%%%%%%%%%%%%%%%%**#%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%#*#%%%%%%%%%%%%%%%%%%%**%%%%%%%%%%%%%%%
+        %%%%%%%%%%%%%%%%#*#%%%%%%%%%%%%%%%%%*#%%%%%%%%%%%%%%%%
+                    RedSpyder Security - RedMask v1.3
+          </pre>
+        </div>
+      </div>
+      
+      <h2>Características Principales</h2>
+      <ul class="feature-list">
+        <li><strong>Enmascaramiento avanzado de URLs:</strong> Transforma enlaces para ocultar su destino real</li>
+        <li><strong>Túneles con Cloudflare:</strong> Utiliza Cloudflared para crear túneles seguros y evitar bloqueos</li>
+        <li><strong>Geolocalización:</strong> Obtiene información detallada de ubicación basada en la IP del objetivo</li>
+        <li><strong>Fingerprinting de navegador:</strong> Captura detalles técnicos del dispositivo y navegador del objetivo</li>
+        <li><strong>Acortamiento de URLs:</strong> Integración con múltiples servicios de acortamiento de enlaces</li>
+        <li><strong>Personalización de enlaces:</strong> Permite añadir palabras clave personalizadas a las URLs</li>
+        <li><strong>Detección de proxies:</strong> Identifica direcciones IP detrás de servicios de proxy o VPN</li>
+      </ul>
+      
+      <h2>Requisitos del Sistema</h2>
+      <ul>
+        <li>Python 3.x instalado</li>
+        <li>Cloudflared configurado y en PATH</li>
+        <li>Conexión a Internet estable</li>
+        <li>Bibliotecas Python: urllib, json, os, sys, subprocess, re, time, socket</li>
+        <li>Opcional: pyshorteners para funcionalidad adicional de acortamiento</li>
+      </ul>
+      
+      <div class="warning">
+        <p><strong>⚠️ ADVERTENCIA LEGAL:</strong> RedMask es una herramienta para pruebas de penetración y auditorías de seguridad autorizadas. El uso no autorizado contra sistemas sin permiso explícito es ilegal y constituye un delito. El usuario es el único responsable del uso que dé a esta herramienta.</p>
+      </div>
+      
+      <h2>Modo de Uso</h2>
+      <div class="step-by-step">
+        <div class="step">
+          <h3>Paso 1: Ejecutar la herramienta</h3>
+          <p>Desde la terminal, navega al directorio donde se encuentra RedMask y ejecuta:</p>
+          <div class="code-block">
+            python3 redmask.py
+          </div>
+        </div>
+        
+        <div class="step">
+          <h3>Paso 2: Configurar la redirección</h3>
+          <p>Introduce la URL a la que quieres redirigir a tus objetivos (ej: https://tu-sitio-legitimo.com)</p>
+          <div class="code-block">
+            [ + ] Introduce URL de redirección >> https://tu-sitio-legitimo.com
+          </div>
+        </div>
+        
+        <div class="step">
+          <h3>Paso 3: Personalizar el enlace (opcional)</h3>
+          <p>La herramienta te preguntará si quieres personalizar la URL. Responde "sí" o "no".</p>
+          <div class="code-block">
+            Quieres customizar la URL? >> sí
+          </div>
+          <p>Si respondiste afirmativamente, introduce una palabra clave para personalizar tu enlace:</p>
+          <div class="code-block">
+            Customizalo >> oferta-exclusiva
+          </div>
+        </div>
+        
+        <div class="step">
+          <h3>Paso 4: Seleccionar dominio para enmascaramiento</h3>
+          <p>Introduce el dominio que quieres usar para enmascarar tu enlace (ej: google, facebook, etc.):</p>
+          <div class="code-block">
+            Introduce qué dominio quieres usar >> google
+          </div>
+        </div>
+        
+        <div class="step">
+          <h3>Paso 5: Distribuir el enlace</h3>
+          <p>RedMask generará múltiples URLs enmascaradas. Copia y distribuye estos enlaces a tus objetivos:</p>
+          <div class="code-block">
+            ==================== URLs Enmascaradas ===================
+            [+]: https://google-oferta-exclusiva@trycloudflare.com/abc123
+            [+]: https://google@is.gd/xyz789
+            ============================================================
+          </div>
+        </div>
+        
+        <div class="step">
+          <h3>Paso 6: Monitorizar conexiones</h3>
+          <p>Cuando un objetivo haga clic en el enlace, RedMask capturará y mostrará su información:</p>
+          <div class="code-block">
+            ===================== Información del Objetivo =====================
+            
+            Agente de Usuario  >> Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36
+            Idioma Aceptado >> es-ES,es;q=0.9,en;q=0.8
+            Versión del Navegador >> "Chromium";v="104", " Not A;Brand";v="99"
+            Plataforma >> "Windows"
+            Dirección IP >> 192.168.1.50
+            
+            ==================== INFORMACIÓN DE GEOLOCALIZACIÓN ====================
+            [*] Ciudad: Madrid
+            [*] Región: Madrid
+            [*] País: ES
+            [*] Coordenadas: 40.4168,-3.7038
+            [*] Google Maps: https://www.google.com/maps?q=40.4168,-3.7038
+            [*] Organización: AS12345 Vodafone España
+            [*] Código Postal: 28001
+            [*] Zona Horaria: Europe/Madrid
+            =======================================================================
+          </div>
+        </div>
+      </div>
+      
+      <h2>Mecanismos Técnicos</h2>
+      <h3>Enmascaramiento de URLs</h3>
+      <p>RedMask utiliza una técnica que aprovecha la sintaxis de URLs para ocultar el destino real. La estructura generada sigue este patrón:</p>
+      <div class="code-block">
+        https://[DOMINIO-ENMASCARADO]-[PALABRA-CLAVE]@[URL-ACORTADA]/[RUTA]
+      </div>
+      <p>Ejemplo: <code>https://google-oferta-exclusiva@trycloudflare.com/abc123</code></p>
+      
+      <h3>Captura de Información</h3>
+      <p>Cuando un objetivo visita el enlace, RedMask captura:</p>
+      <ul>
+        <li>Agente de usuario (User-Agent)</li>
+        <li>Idiomas preferidos</li>
+        <li>Información de la plataforma y navegador</li>
+        <li>Dirección IP real (incluso detrás de algunos proxies)</li>
+        <li>Geolocalización basada en IP</li>
+        <li>Resolución de pantalla y capacidades del navegador</li>
+      </ul>
+      
+      <h3>Túneles Cloudflare</h3>
+      <p>RedMask utiliza Cloudflared para crear túneles seguros que:</p>
+      <ul>
+        <li>Ocultan tu dirección IP real</li>
+        <li>Sortean restricciones de firewall simples</li>
+        <li>Proporcionan un certificado SSL válido para mayor credibilidad</li>
+      </ul>
+      
+      <h2>Ejemplos de Uso en Auditorías</h2>
+      <ul>
+        <li><strong>Pruebas de phishing controlado:</strong> Simular campañas de phishing para evaluar la concienciación de los empleados</li>
+        <li><strong>Evaluación de filtros de seguridad:</strong> Testear la efectividad de los filtros de URLs y correos electrónicos</li>
+        <li><strong>Análisis de tráfico malicioso:</strong> Capturar información de atacantes en honeypots</li>
+        <li><strong>Ejercicios de red teaming:</strong> Obtener acceso inicial en entornos controlados</li>
+      </ul>
+      
+      <h2>Solución de Problemas</h2>
+      <p><strong>Error: "cloudflared no está instalado"</strong></p>
+      <p>Solución: Descarga e instala Cloudflared desde <a href="https://developers.cloudflare.com/cloudflare-one/connections/connect-netins/install-and-setup/installation/" target="_blank">la documentación oficial de Cloudflare</a>.</p>
+      
+      <p><strong>Error: "Límite de consultas excedido"</strong></p>
+      <p>Solución: Espera unos minutos antes de realizar más consultas de geolocalización o utiliza una API alternativa.</p>
+      
+      <p><strong>Error: "Puerto ya en uso"</strong></p>
+      <p>Solución: Cambia el puerto en el código fuente o cierra la aplicación que está usando el puerto 4567.</p>
+      
+      <h2>Limitaciones y Consideraciones</h2>
+      <ul>
+        <li>Las URLs enmascaradas pueden ser detectadas por filtros avanzados de seguridad</li>
+        <li>La geolocalización por IP no siempre es precisa, especialmente con VPNs</li>
+        <li>Algunos navegadores modernos alertan sobre URLs que usan la sintaxis "usuario@dominio"</li>
+        <li>El uso repetido de los mismos servicios de acortamiento puede resultar en bloqueos</li>
+      </ul>
+    </div>
+    
+    <div class="categories-grid">
+      <div class="category-card" onclick="window.location.href='https://redspydersec.github.io/Tools/RedSpyder/redmask.html'">
+        <h3> RedMask-X </h3>
+        <p>Herramienta escrita en Python3, con el propósito de poder enmascarar urls y capturar información del objetivo. </p>
+      </div>
+      <div class="category-card" onclick="window.location.href='index.html'">
+        <h3>🔍 Análisis de Vulnerabilidades</h3>
+        <p>Escáneres y herramientas de identificación de puntos débiles en sistemas</p>
+      </div>
+      
+      <div class="category-card" onclick="window.location.href='index.html'">
+        <h3>⚡ Explotación</h3>
+        <p>Utilidades para explotar vulnerabilidades identificadas en sistemas objetivo</p>
+      </div>
+      
+      <div class="category-card" onclick="window.location.href='index.html'">
+        <h3>🕵️ Post-Explotación</h3>
+        <p>Herramientas para mantener acceso y movimiento lateral una vez comprometido un sistema</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>© 2025 RedSpyder Security | contacto.redspyder@gmail.com</p>
+    <p>RedMask v1.3 - Herramienta para pruebas de penetración autorizadas</p>
+  </footer>
+</body>
+</html>
