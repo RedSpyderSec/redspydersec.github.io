@@ -115,7 +115,7 @@ footer {
 }
     
 .category-card {
-    background: linear-gradient(145deg, #1a1a2e, #16213e);
+    background: linear-gradient(145deg, #600, #400);
     border-radius: 10px;
     padding: 25px;
     text-align: center;
@@ -132,15 +132,16 @@ footer {
 .category-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(145deg, #16213e, #0f3460);
+    background: linear-gradient(145deg, #f00, #c00);
 }
     
 .category-card h3 {
     margin-top: 0;
-    color: #e94560;
+    color: #000;
 }
     
 .category-card p {
-    color: #b8b8b8;
+    color: #000;
     font-size: 0.9em;
  }
+
