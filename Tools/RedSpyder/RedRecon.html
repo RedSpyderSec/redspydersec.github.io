@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>RedSpyder Recon - X</title>
+    <link rel="icon" type="image/x-icon" href="../../../../spyder.ico">
+    <link rel="stylesheet" href="../../../../style.css">
+    <style>
+        /* CARD SCROLL AUTOMÁTICO */
+        .category-card {
+            background: linear-gradient(145deg, #600, #400);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            height: 150px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            background: linear-gradient(145deg,#f00,#c00);
+        }
+        .category-card p {
+            margin: 0;
+            max-height: 100px;
+            overflow: hidden;
+            position: relative;
+            color: #fff;
+        }
+        .category-card p span {
+            display: inline-block;
+            position: absolute;
+            bottom: -100%;
+            width: 100%;
+            white-space: pre-wrap;
+            animation: scrollUp 12s linear infinite;
+        }
+        @keyframes scrollUp {
+            0% { bottom: -100%; }
+            100% { bottom: 0%; }
+        }
+
+        /* GRID 2x2 */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .categories-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🕷️ RedSpyder Recon - X</h1>
+        <p>👾 Soluciones ofensivas para auditorías y análisis de superficie de ataque</p>
+        <nav>
+            <a href="../..">⬅️ Volver atrás</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Descripción General</h2>
+            <p>RedRecon - X es la herramienta de reconocimiento de la suite RedSpyder, diseñada para recopilar información de IPs públicas y activos expuestos a Internet. Permite geolocalizar IPs, identificar ISP y organización, visualizar en mapas satelitales en tiempo real y detectar puertos abiertos. Toda la información se centraliza con historial de rastreo y exportación de datos, ideal para auditorías externas y análisis de superficie de ataque.</p>
+        </section>
+
+        <section>
+            <h2>Características Clave</h2>
+            <ul class="feature-list">
+                <li>Geolocalización de IPs públicas</li>
+                <li>Detección de ISP y organización</li>
+                <li>Visualización en mapas satelitales en tiempo real</li>
+                <li>Escaneo de puertos expuestos a WAN</li>
+                <li>Historial de rastreo y exportación de datos</li>
+                <li>Interfaz rápida y centralizada de footprinting</li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Explora la Herramienta</h2>
+            <div class="categories-grid">
+                <div class="category-card" onclick="window.location.href='index.html'">
+                    <h3>RedSpyder Recon - X</h3>
+                    <p>
+                        <span>RedRecon - X recopila info de IPs públicas, geolocaliza, identifica ISP y organiza datos de puertos abiertos. Con historial y exportación para auditorías externas y análisis de superficie de ataque.</span>
+                    </p>
+                </div>
+                <div class="category-card" onclick="window.location.href='index.html'">
+                    <h3>Próximamente...</h3>
+                    <p><span>...</span></p>
+                </div>
+                <div class="category-card" onclick="window.location.href='index.html'">
+                    <h3>Próximamente...</h3>
+                    <p><span>...</span></p>
+                </div>
+                <div class="category-card" onclick="window.location.href='index.html'">
+                    <h3>Próximamente...</h3>
+                    <p><span>...</span></p>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Capturas y Ejemplos</h2>
+            <div class="screenshot">
+                <img src="../../../../images/redspyder-map.png" alt="Mapa satelital RedSpyder Recon">
+            </div>
+        </section>
+
+        <section>
+            <h2>Acciones</h2>
+            <a class="btn download-btn" href="redspyder_recon_x.zip">Descargar RedSpyder Recon - X</a>
+            <a class="btn tools-button" href="index.html">Abrir Herramienta</a>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 RedSpyder Security | contacto.redspyder@gmail.com</p>
+    </footer>
+</body>
+</html>
