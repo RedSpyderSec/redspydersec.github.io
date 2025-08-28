@@ -141,7 +141,7 @@ a:hover {
     height: 150px;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end; /* hace que el scroll comience desde abajo */
+    justify-content: flex-end; /* Scroll desde abajo */
     align-items: center;
     border-left: none;
     overflow: hidden;
@@ -156,29 +156,29 @@ a:hover {
 
 /* Scroll de texto vertical automático */
 .category-card p {
-    max-height: 100px; /* espacio visible del texto */
+    max-height: 100px;
     overflow: hidden;
     position: relative;
 }
 
-.category-card p::after {
+.category-card p::before {
     content: attr(data-text);
     position: absolute;
     bottom: -100%;
     left: 0;
     width: 100%;
-    color: #fff;
     white-space: pre-wrap;
+    color: #fff;
     animation: scrollUp 12s linear infinite;
 }
 
+.category-card:hover p::before {
+    animation-play-state: paused; /* pausa al hover */
+}
+
 @keyframes scrollUp {
-    0% {
-        bottom: -100%;
-    }
-    100% {
-        bottom: 0%;
-    }
+    0% { bottom: -100%; }
+    100% { bottom: 0%; }
 }
 
 /* Sistema de botones unificado */
