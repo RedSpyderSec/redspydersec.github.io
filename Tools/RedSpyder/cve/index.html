@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/x-icon" href="../../../../spyder.ico">
+  <meta charset="UTF-8">
+  <title>RedSpyder - Winbox Exploit v2.0</title>
+  <link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+  <header>
+    <h1>Winbox Exploit v2.0</h1>
+    <p>Explotación avanzada de dispositivos MikroTik</p>
+    <nav>
+      <a href="../../../Exploits/index.html"> ← Volver a Exploits</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Descripción</h2>
+      <p>Herramienta de RedSpyder para extraer usuarios y contraseñas de dispositivos MikroTik vulnerables con RouterOS ≤ 6.42.12 mediante el servicio Winbox.</p>
+      <p><strong>Categoría:</strong> Exploits → Winbox / RouterOS</p>
+      <p><strong>Requisitos:</strong> Python 3, conexión de red al puerto 8291 del objetivo.</p>
+    </section>
+
+    <section class="card">
+      <h2>Uso básico</h2>
+      <pre>
+python3 winbox_exploit_v2.py [OPCIONES] DIRECCIÓN_IP
+
+Opciones:
+  -p, --puerto PUERTO      Puerto objetivo (por defecto: 8291)
+  -o, --output ARCHIVO     Guardar resultados en archivo
+  -t, --tiempo TIMEOUT     Tiempo de espera en segundos (por defecto: 5)
+  -s, --silencioso         Modo silencioso (sin colores ni banners)
+  -v, --verbose            Modo verbose (mostrar más detalles)
+  -h, --help               Mostrar esta ayuda
+      </pre>
+      <p><strong>Ejemplo:</strong></p>
+      <pre>
+python3 winbox_exploit_v2.py 192.168.1.1
+python3 winbox_exploit_v2.py -p 8291 -o resultados.txt 10.0.0.5
+python3 winbox_exploit_v2.py -t 10 --silencioso 192.168.1.1
+      </pre>
+    </section>
+
+    <section class="card">
+      <h2>Notas de seguridad</h2>
+      <ul>
+        <li>Solo usar en entornos controlados y con autorización.</li>
+        <li>Diseñado para pruebas de penetración y auditorías de seguridad.</li>
+        <li>Actualizar siempre los dispositivos MikroTik para mitigar la vulnerabilidad.</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 RedSpyder Security | contacto.redspyder@gmail.com</p>
+  </footer>
+</body>
+</html>
