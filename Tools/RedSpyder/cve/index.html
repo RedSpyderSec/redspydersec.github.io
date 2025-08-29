@@ -3,12 +3,12 @@
 <head>
   <link rel="icon" type="image/x-icon" href="../../../../spyder.ico">
   <meta charset="UTF-8">
-  <title>RedSpyder - Winbox Exploit v2.0</title>
+  <title>RedSpyder - CVE-2018-14847</title>
   <link rel="stylesheet" href="../../../../style.css">
 </head>
 <body>
   <header>
-    <h1>Winbox Exploit v2.0</h1>
+    <h1>CVE-2018-14847</h1>
     <p>Explotación avanzada de dispositivos MikroTik</p>
     <nav>
       <a href="https://redspydersec.github.io/Tools/Categorias/Exploits/index.html"> ← Volver a Exploits</a>
@@ -19,7 +19,6 @@
     <section class="card">
       <h2>Descripción</h2>
       <p>Herramienta de RedSpyder para extraer usuarios y contraseñas de dispositivos MikroTik vulnerables con RouterOS ≤ 6.42.12 mediante el servicio Winbox.</p>
-      <p><strong>Categoría:</strong> Exploits → Winbox / RouterOS</p>
       <p><strong>Requisitos:</strong> Python 3, conexión de red al puerto 8291 del objetivo.</p>
     </section>
     <section class="card"> 
@@ -30,7 +29,7 @@
     <section class="card">
       <h2>Uso básico</h2>
       <pre>
-python3 winbox_exploit_v2.py [OPCIONES] DIRECCIÓN_IP
+python3 CVE-2018-14847.py [OPCIONES] DIRECCIÓN_IP
 
 Opciones:
   -p, --puerto PUERTO      Puerto objetivo (por defecto: 8291)
@@ -42,17 +41,17 @@ Opciones:
       </pre>
       <p><strong>Ejemplo:</strong></p>
       <pre>
-python3 winbox_exploit_v2.py 192.168.1.1
-python3 winbox_exploit_v2.py -p 8291 -o resultados.txt 10.0.0.5
-python3 winbox_exploit_v2.py -t 10 --silencioso 192.168.1.1
+python3 CVE-2018-14847.py 192.168.1.1
+python3 CVE-2018-14847.py -p 8291 -o resultados.txt 10.0.0.5
+python3 CVE-2018-14847.py -t 10 --silencioso 192.168.1.1
       </pre>
     </section>
     <section class="card">
       <h2>Descarga</h2>
-      
+        <a class="btn download-btn" href="CVE-2018-14847.py">Descargar CVE-2018-14847</a>
     </section>
   </main>
-
+  
   <footer>
     <p>© 2025 RedSpyder Security | contacto.redspyder@gmail.com</p>
   </footer>
