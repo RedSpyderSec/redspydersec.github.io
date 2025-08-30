@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="icon" type="image/x-icon" href="../../../../spyder.ico">
+  <meta charset="UTF-8">
+  <title>RedSpyder - ForzadorWeb</title>
+  <link rel="stylesheet" href="../../../../style.css">
+</head>
+<body>
+  <header>
+    <h1>🕷️ RedSpyder - Fuerza Bruta para acceso</h1>
+    <p>👾 Herramienta académica para entornos de laboratorio</p>
+    <nav>
+      <a href="../../index.html"> ← Volver al Inicio</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2> Descripción</h2>
+      <p>
+        Este script realiza intentos de <strong>fuerza bruta</strong> sobre formularios de login web,
+        utilizando listas de <em>usuarios</em> y <em>contraseñas</em>. 
+        Fue diseñado como <strong>POC (Proof of Concept)</strong> para fines educativos y pruebas en <u>entornos controlados</u>.
+      </p>
+      <p>
+        <strong>ATENCIÓN:</strong> El uso en entornos reales está <u>prohibido</u>. 
+        Solo utilícelo en laboratorios, prácticas o con fines académicos.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>⚙ Uso</h2>
+      <ol>
+        <li>Edite las variables en el script:
+          <ul>
+            <li><code>url</code>: URL del formulario objetivo.</li>
+            <li><code>usuarios</code>: archivo con lista de usuarios.</li>
+            <li><code>wordlist</code>: archivo con lista de contraseñas.</li>
+            <li><code>patron_fallo</code>: texto que indica login fallido.</li>
+          </ul>
+        </li>
+        <li>Ejecute el script con Python 3:
+          <pre><code>python3 ForzadorWeb-X.py</code></pre>
+        </li>
+        <li>Revise la salida en consola para detectar accesos posibles.</li>
+      </ol>
+    </section>
+
+    <section class="card">
+      <h2>[ ! ] Recomendaciones</h2>
+      <ul>
+        <li>Siempre ejecute en <strong>laboratorios controlados</strong>.</li>
+        <li>Verifique los parámetros del formulario con <kbd>F12</kbd> (herramientas del navegador).</li>
+        <li>Ajuste tokens CSRF u otros parámetros según el formulario.</li>
+        <li>Use listas pequeñas para pruebas rápidas y validación de funcionamiento.</li>
+        <li>No abuse del tiempo de espera, defina <code>timeout</code> razonable.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>[ ! ] Archivos Relacionados</h2>
+      <ul>
+        <li><code>usuarios.txt</code> → lista de usuarios</li>
+        <li><code>diccionario.txt</code> → lista de contraseñas</li>
+        <li><code>ForzadorWeb-X.py</code> → script principal</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 RedSpyder Security | contacto.redspyder@gmail.com</p>
+  </footer>
+</body>
+</html>
