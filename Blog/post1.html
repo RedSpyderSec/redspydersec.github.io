@@ -3,7 +3,7 @@
 <head>
 <link rel="icon" type="image/x-icon" href="../spyder.ico">
   <meta charset="UTF-8">
-  <title>RedSpyder - RouterOS 6.42.9 </title>
+  <title>RedSpyder - CVE-2018-14847 </title>
   <link rel="stylesheet" href="../style.css">
 </head>
 <body>
@@ -16,7 +16,7 @@
   </header>
 
   <main>
-    <h2>📌 Explotación de vulnerabilidad de RouterOS en entidad educativa</h2>
+    <h2>📍 Explotación de vulnerabilidad de RouterOS en entidad educativa 📍</h2>
 
     <p>Durante una evaluación de seguridad ofensiva, se identificó un router Mikrotik expuesto con versión desactualizada de <strong>RouterOS</strong>, que además permitía acceso al servicio <code>winbox</code> desde cualquier IP sin restricciones.</p>
 
@@ -30,7 +30,7 @@
     👾 Dato: No solo permite acceder a credenciales actuales de administración, sino que también permite acceder a credenciales antiguas.
 
     
-    <h3>⚙️ Explotación realizada</h3>
+    <h3>⚙ Explotación realizada</h3>
 
 <p>
 Durante la auditoría, se utilizó un script desarrollado en Python 3 capaz de explotar una vulnerabilidad conocida en <strong>RouterOS</strong> (versiones <code>&lt; 6.43</code>) que afecta al servicio <code>Winbox</code>. 
@@ -50,20 +50,20 @@ El proceso de explotación consta de las siguientes etapas:
 Como resultado, se recuperaron múltiples credenciales de administración en texto plano, permitiendo acceso total al dispositivo afectado.
 </p>
 
-<pre><code>
-# python3 RouterOS.py 172.17.80.1
-Explotando ... 
-Target --> 172.17.80.1
-Puerto --> 8291
-Exploit Exitoso!
-
-Usuario --> Admin
-Contraseña --> P455w0rd
-
-Usuario --> Admin
-Contraseña --> 
-
-</code></pre>
+  <pre><code>
+      # python3 CVE-2018-14847.py 172.17.80.1
+      Explotando ... 
+      Target --> 172.17.80.1
+      Puerto --> 8291
+      Exploit Exitoso!
+      
+      Usuario --> Admin
+      Contraseña --> P455w0rd
+      
+      Usuario --> Admin
+      Contraseña --> 
+  
+  </code></pre>
 
     <h3> Riesgos</h3>
     <ul>
@@ -80,7 +80,7 @@ Contraseña -->
       <li>Auditar regularmente configuraciones de red</li>
     </ol>
 
-    <p><em> ⚠️ Este writeup está basado en una simulación o entorno similar a casos reales. No se revelan datos sensibles ni nombres de entidades involucradas.</em></p>
+    <p><em> ⚠ Este writeup está basado en una simulación o entorno similar a casos reales. No se revelan datos sensibles ni nombres de entidades involucradas.</em></p>
   </main>
 
   <footer>
