@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/x-icon" href="https://redspydersec.github.io/spyder.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Ghostpyder: Fuzzer de alto rendimiento para auditorías de ciberseguridad.">
+    <meta name="author" content="gstxx (Ghostpyder)">
+    <title>Ghostpyder - RedSpyder Security</title>
+    <link rel="stylesheet" href="https://redspydersec.github.io/style.css">
+</head>
+<body>
+    <header>
+        <h1>Ghostpyder</h1>
+        <p>Descubre rutas, subdominios y vulnerabilidades en minutos.</p>
+    </header>
+
+    <section id="about">
+        <h2>¿Qué es Ghospyder?</h2>
+        <p><strong>Ghostpyder - X</strong> es una herramienta de fuzzing de línea de comandos diseñada para la detección rápida y eficiente de recursos ocultos (archivos, directorios, subdominios y Virtual Hosts) en auditorías de ciberseguridad. Está optimizada para entornos modernos, priorizando la rapidez y la detección inteligente sobre la fuerza bruta ciega.</p>
+    </section>
+
+    <section id="services">
+        <h2>Ventajas Competitivas</h2>
+        <ul>
+            <li>
+                <strong>Velocidad Extrema (Go Lang):</strong> Al estar desarrollado en Go, aprovecha la concurrencia nativa para ejecutar miles de peticiones por segundo, superando a herramientas tradicionales basadas en Python o Bash en rendimiento puro.
+            </li>
+            <li>
+                <strong>Filtro Inteligente Anti-Ruido:</strong> A diferencia de otros fuzzers, realiza una comprobación previa y detecta el tamaño de la página de error (404/403) del servidor objetivo. Esto permite filtrar automáticamente las respuestas basura, presentando solo los resultados realmente interesantes.
+            </li>
+            <li>
+                <strong>Comprobación Previa Robusta:</strong> Evita "fuzzear al vacío" validando la conectividad y manejando errores de SSL/TLS (con la opción '-k') antes de iniciar el escaneo completo.
+            </li>
+            <li>
+                <strong>Escaneo Modular y Dirigido:</strong> Soporta modos específicos (DIR, DNS, VHOST) y exige la especificación explícita de extensiones** ('-e .php,.html'), garantizando que cada escaneo sea relevante y eficiente.
+            </li>
+        </ul>
+    </section>
+
+    <section id="usage">
+        <h2>Modo de Uso Básico (DIR)</h2>
+        <p>El uso es directo, con argumentos obligatorios para evitar escaneos innecesarios.</p>
+        
+        <pre><code>./ghostpyder-Linux-v2 -u &lt;URL_Objetivo&gt; -d &lt;ruta_a_diccionario&gt; -e &lt;extensiones&gt; [OPCIONES]</code></pre>
+
+        <p><strong>Ejemplo de Fuzzing de Directorios:</strong></p>
+        <pre><code>./ghostpyder-Linux-v2 -u https://objetivo.com -d /usr/share/wordlists/dirb/big.txt -e .php,.html,.js -k -r -fc 403 -fs 555</code></pre>
+        
+        <p><strong>Explicación de Flags Avanzados:</strong></p>
+        <ul>
+            <li><code>-k</code>: Omite la verificación de SSL (esencial en muchos entornos de prueba).</li>
+            <li><code>-r</code>: Habilita el escaneo recursivo de directorios encontrados.</li>
+            <li><code>-fc 403</code>: Excluye todas las respuestas con el código de estado HTTP 403 (Acceso Denegado).</li>
+            <li><code>-fs 555</code>: Excluye respuestas con un tamaño específico (útil para eliminar la página de error base).</li>
+        </ul>
+    </section>
+    <section>
+        <h2>Video</h2>
+        <video width="800" height="500" autoplay loop muted playsinline>
+    <source src="ghostpyder-vid.mp4" type="video/mp4">
+    </video>
+        </section>
+    <section id="logic">
+        <h2>Lógica de Operación</h2>
+        <p>La eficiencia de Ghostpyder se basa en un flujo de trabajo optimizado:</p>
+        <ol>
+            <li>
+                <strong>Verificación Inicial:</strong> Una simple petición 'HEAD' a la raíz del objetivo. Si falla la conexión o SSL, el proceso se detiene antes de consumir recursos.
+            </li>
+            <li>
+                <strong>Detección de Ruido:</strong> Una petición de prueba a una ruta aleatoria. El tamaño de la respuesta 404/403 se guarda automáticamente.
+            </li>
+            <li>
+                <strong>Ejecución Concurrente:</strong> Múltiples hilos inician peticiones HTTP/DNS, respetando el límite de tasa ('-rate') para evitar bloqueos del servidor.
+            </li>
+            <li>
+                <strong>Filtrado en Tiempo Real:</strong> Cada respuesta se compara con los códigos ('-fc') y los tamaños ('-fs' y el 404 detectado) antes de ser mostrada.
+            </li>
+            <li>
+                <strong>Recursividad (Opcional):</strong> Si se encuentra un directorio 200/301, se añade a una cola de trabajo recursiva, iniciando un nuevo escaneo en esa ruta hasta el nivel de profundidad definido.
+            </li>
+        </ol>
+        <section>
+            <h2>Descarga Linux</h2>
+            <a class="btn download-btn" href="ghostpyder-Linux-v2">Descargar Ghostpyder-Linux-v2</a>
+            <a class="btn tools-button" href=".">Más Información</a>
+        </section>
+    </section>
+
+    <footer>
+        <p>© 2025 RedSpyder Security | contacto.redspyder@gmail.com</p>
+    </footer>
+</body>
+</html>
