@@ -1,0 +1,170 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<link rel="icon" type="image/x-icon" href="https://redspydersec.github.io/spyder.ico">
+  <meta charset="UTF-8">
+  <title>PSYCO - RedSpyder Security</title>
+  <link rel="stylesheet" href="https://redspydersec.github.io/style.css">
+</head>
+<body>
+  <header>
+    <h1>🕷️ PSYCO 🕷️</h1>
+    <p>Explotación de máquina vulnerable de <a href="https://dockerlabs.es/">DockerLabs</a> </p>
+    <nav>
+      <a href="../">← Volver atrás </a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Conectividad con el objetivo</h2>
+
+    <p>Primero como medida de reconocimiento se tiene que comprobar la conectividad con el objetivo. Para este propósito se hará trazas ICMP con el comando PING hacia el objetivo.</p>
+    <p>VISUAL:</p>
+    <pre><code>$ ping &lt;ip_objetivo&gt; -c 3</code></pre>
+    <div class="card">
+    <img src="01.png" alt="Ping a objetivo" style="max-width: 100%; height: auto;">
+    </div>
+    <p>Una vez confirmado que tenemos conexión con nuestro objetivo, continuamos con el reconocimiento de puertos ...</p>
+    <h2>NMAP - STEALTH</h2>
+    <pre><code>$ nmap -sS &lt;ip_objetivo&gt; -p- --min-rate 4000 </code></pre>
+    <p>Con NMAP lo que haremos de primeras es hacer un <strong>Escaneo Stealth (SYN)</strong> contra todos los puertos (65535), para este propósito nmap maneja parámetros própios.</p>
+    <p>El escaneo nos permitirá saber que puertos hay abiertos dentro de nuestro objetivo, ya sea abiertos o filtrados para ver nuestra posible vía de ataque.</p>
+    <p>VISUAL:</p>
+    <div class="card">
+    <img src="02.png" alt="Escaneo de TODOS los puertos" style="max-width: 100%; height: auto;">
+    </div>
+    <h2>NMAP - Script Scan | Version Scan</h2>
+    <pre><code>$ nmap -sCV -p80,22 &lt;ip_objetivo&gt;</code></pre>
+    <p>Según lo encontrado por NMAP tenemos los puertos, 22 y el 80 abiertos, por ende solo nos enfocaremos en estos.</p>
+    <p>Procedemos a hacer un reconocimiento de los servicios detrás de estos puertos, además de lanzar unos scripts para hacer más efectivo esto.</p>
+    <p>VISUAL: </p>
+    <div class="card">
+    <img src="03.png" alt="Escaneo MÁS enfocado y ligeramente más detallado" style="max-width: 100%; height:auto;">
+    </div>
+    <h2>Browser</h2>
+    <p>Accedemos por nuestro navegador hacia el host objetivo, con el fin de ver que pistas nos puede dar</p>
+    <p>VISUAL:</p>
+    <img src="04.png" alt="Vista desde el navegador" style="max-width: 100%; height:auto;">
+    <p>De primera vista se nota que algo está cargando mal dentro de esta.</p>
+    <pre><code>[!] ERROR [!]</code></pre>
+    <h2>FUZZ</h2>
+    <p>Realizamos un fuzzing con la herramienta <strong>ghostpyder-v3-Linux</strong> y el diccionario de seclists &lt;directory-list-2.3-medium.txt&gt; obtenemos el siguiente un resultado</p>
+    <pre><code>[200] http://&lt;ip_objetivo&gt;/index.php </code></pre>
+    <pre><code>[301] http://&lt;ip_objetivo&gt;/assets </code></pre>
+    <p>VISUAL:</p>
+    <div class="card">
+    <img src="05.png" alt="Fuzz web with redspyder tool" style="max-width: 100%; height:auto;">        
+    </div>
+    <p>Se accede a index.php para ver el contenido de la web, se identifica un posible usuario dentro de esta, pero no es de relevancia.</p>
+    <div class="card">
+        <img src="06.png" alt="index.php endpoint" style="max-width: 100%; height:auto;">
+    </div>
+    <p>La página maneja php, esto es una pista.</p>
+    <h2>Robots.txt</h2>
+    <div class="card">
+        <img src="07.png" alt="assets endpoint" style="max-width: 100%; height:auto;">
+    </div>
+    <p>robots.txt no nos da ayuda.</p>
+    <h2>FUZZ - payloads</h2>
+    <p>Volvemos a usar <strong>ghostpyder-v3-Linux</strong> y el diccionario de seclists &lt;directory-list-2.3-medium.txt&gt; pero fomentado a descubrir un posible LFI </p>
+    <div class="card">
+        <img src="08.png" alt="Fuzz web with redspyder tool payload" style="max-width: 100%; height:auto;">
+    </div>
+    <p>Se logró encontrar una respuesta con un posible LFI. (se aplicó el filtro "-fs 2596" para evitar imprimir falsos positivos o ruido excesivo en el output)</p>
+    <div class="card"> 
+        <img src="09.png" alt="" style="max-width: 100%; height:auto;">
+    </div>
+    <p>Nos imprime el contenido de /etc/hosts.</p>
+    <p>LFI Detectado!</p>
+    <h2>Abuso de LFI</h2>
+    <p>Se hace una búsqueda de usuarios en la ruta <strong>/etc/hosts</strong>.</p>
+    <div class="card">
+        <img src="10.png" alt="oño" style="max-width: 100%; height:auto;">
+    </div>
+    <div class="card">
+        <img src="11.png" alt="oño" style="max-width: 100%; height:auto;">
+    </div>
+    <p>A simple vista nos muestra un usuario llamativo <strong>vaxei</strong> y otro <strong>luisillo</strong>.</p>
+    <p>Ahora abusaremos más de la función de lectura de este LFI</p>
+    <div class="card">
+        <img src="12.png" alt="oño" style="max-width: 100%; height:auto;">
+    </div>
+    <p>Se encontró una llave ssh, esta es del usuario <strong>vaxei</strong></p>
+    <h2>Clave SSH</h2>
+    <p>Copiamos este valor y lo ingresamos en un archivo de texto llamado <strong>id_rsa</strong>.</p>
+    <div class="card">
+        <img src="13.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><code>NOTA: Asegurarse de no incluir más caracteres o dejar espacios en blanco</code></pre>
+        <pre><coede>esto genera fallos en la llave</code></pre>
+    </div>
+    <p>Ejemplo de forma incorrecta:</p>
+    <div class="card">
+        <img src="14.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><code>[!] Observación: en el inicio de la llave hay un espacio en blanco</code></pre>
+    </div>
+    <h2>Permisos de la llave</h2>
+    <div class="card">
+        <img src="15.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><coede>NOTA: Debemos darle permisos a la llave para que pueda funcionar correctamente:</code></pre>
+        <pre><coede>chmod 600 id_rsa</code></pre>
+    </div>
+    <h2>ACCESO</h2>
+    <p>Se logro acceder correctamente.</p>
+    <div class="card">
+        <img src="16.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><coede>Se acedió a la máquina</code></pre>
+    </div>
+    <h2>Escala de privilegios</h2>
+    <p>Interactuamos verificando nuestros permisos</p>
+    <div class="card">
+        <img src="17.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><coede>El usuario vaxei tiene permisos para ejecutar comandos perl como el usuario luisillo</code></pre>
+        <pre><coede> trick: sudo -l </code></pre>
+    </div>
+    <p>Usamos GTFOBINS para explotar el manejo de <strong>PERL</strong></p>
+    <div class="card">
+        <img src="18.png" alt="oño" style="max-width: 100%; height:auto;">
+        <a href="https://gtfobins.github.io/gtfobins/perl/">Enlace a GTFOBINS - PERL</a>
+    </div>  
+    <p>El usuario <strong>vaxei</strong> tiene permisos para ejecutar comandos <strong>perl</strong> como el usuario <strong>luisillo</strong></p>
+    <p>El usuario luisillo tiene permisos para ejecutar paw.py, dentro de /otp/ como el usuario root.</p>
+    <div class="card">
+        <img src="19.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><coede> trick: sudo -l >> Esto sirve para ver los permisos que se nos dá sobre comandos</code></pre>
+        <pre><coede> trick: bash -i >> Hace una shell interactiva de bash</code></pre>
+    </div>   
+    <div class="card">
+        <img src="20.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><coede> (paw.py) Su propietario puede leerlo y editarlo, los demás pueden leerlo (644) </code></pre>
+        <pre><coede> (/otp/) TODOS sin importar quien sea pueden crear/modificar o eliminar archivos dentro de esta carpeta</code></pre>
+        <pre><coede> de esta carpeta (757)</code></pre>
+    </div>
+    <p>Contenido de paw.py </p>
+    <div class="card">
+        <img src="21.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><coede>NOTA: noto 2 formas de explotar esto, pero intentemos algo simple. </code></pre>
+    </div>
+    <p>Modificamos el archivo paw.py para que nos ejecute una reverseshell.</p>
+    <p>En paralelo establecemos el puerto 4444 en escucha con ncat</p>
+    <pre><code>ncat -nlvp 4444</code></pre>
+    <div class="card">
+        <img src="22.png" alt="oño" style="max-width: 100%; height:auto;">
+    </div>
+    <p>Una vez eliminado el script original y modificado por una reverseshell en python3 con el mismo nombre ...</p>
+    <div class="card">
+        <img src="23.png" alt="oño" style="max-width: 100%; height:auto;">
+        <pre><coede>Ejecutamos como ROOT el script ya modificado, dentro de el mismo /opt en el cual hay permisos</coede></pre>
+    </div>
+    <p>Obtenemos la conexión reversa viajamos hasta el directorio de root, verificamos permisos con ID, y nuestro usuario</p>
+    <pre><code># whoami</code></pre>
+    <pre><code># id</code></pre>
+    <pre><code># echo 'pwned by gstxx!'</code></pre>
+    <pre><code>En caso tener alguna duda sobre la máquina o haberse estancado en algún paso, accede a la comunidad de Telegram o de Discord</code></pre>
+    <pre><code>para resolver tus dudas y seguir aprendiendo!</code></pre>
+    <p>Que tengas un buen día y recuerda enderezar la espalda! </p>
+    <footer>
+    <p>Publicado por RedSpyder Security | contacto.redspyder@gmail.com</p>
+  </footer>
+</body>
+</html>
