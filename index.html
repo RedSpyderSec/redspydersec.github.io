@@ -1,72 +1,307 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<link rel="icon" type="image/x-icon" href="spyder.ico">
-    
-    <div style="position: absolute; top: 20px; left: 20px;">
-        <a href="Tools/index.html" class=tools-button"> ⚙ Tools </a>
-    </div>
-    <link rel="icon" type="image/x-icon" href="spyder.ico">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="RedSpyder - Servicios de Ciberseguridad y Pentesting en Perú">
     <meta name="author" content="RedSpyder Security">
     <title>RedSpyder Security</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="spyder.ico">
+    <link rel="stylesheet" href="https://redspydersec.github.io/style.css">
 </head>
 <body>
+    <div class="particles" id="particles"></div>
+    
+    <div class="overlay" id="overlay"></div>
+    
     <header>
-        <h1>🕷️ RedSpyder Security</h1>
-        <p>Ciberseguridad ofensiva y defensa digital de alto nivel</p>
-        <div style="position:absolute; top:20px; right:20px;">
-            <a href="Blog/index.html" class="blog-button"> 🐍 Blog Técnico</a>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">
+                        <i class="fas fa-spider"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>RedSpyder Security</h1>
+                        <p>Ciberseguridad ofensiva y defensa digital de alto nivel</p>
+                    </div>
+                </div>
+                
+                <button class="menu-toggle" id="menuToggle" aria-label="Menú de navegación">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <nav class="nav-buttons" id="navButtons">
+                    <a href="Tools/index.html" class="nav-button">
+                        <i class="fas fa-tools"></i> Tools
+                    </a>
+                    <a href="Blog/index.html" class="nav-button">
+                        <i class="fas fa-blog"></i> Blog Técnico
+                    </a>
+                </nav>
+            </div>
         </div>
     </header>
 
-    <section id="about">
-        <h2>¿Qué es?</h2>
-            <p>RedSpyder es un proyecto orientado a la prestación de servicios en ciberseguridad, incluyendo hacking ético, auditorías de seguridad y análisis de vulnerabilidades, dirigido a organizaciones que buscan fortalecer la protección de sus sistemas críticos.</p>
-    </section>
+    <main>
+        <section id="about">
+            <div class="container">
+                <div class="section-header">
+                    <h2>¿Qué es?</h2>
+                </div>
+                <div class="content-card">
+                    <p>RedSpyder es un proyecto orientado a la prestación de servicios en ciberseguridad, incluyendo hacking ético, auditorías de seguridad y análisis de vulnerabilidades, dirigido a organizaciones que buscan fortalecer la protección de sus sistemas críticos.</p>
+                </div>
+            </div>
+        </section>
 
-    <section id="services">
-        <h2>Alcance</h2>
-        <ul>
-            <li>Pentesting Web / Red Interna / Externa</li>
-            <li>Hacking Ético & Análisis de Vulnerabilidades</li>
-            <li>OSINT y Exposición Digital</li>
-            <li>Seguridad en Active Directory</li>
-            <li>Capacitación en Ciberseguridad</li>
-            <li>Respuesta ante Incidentes (IR)</li>
-        </ul>
-    </section>
+        <section id="services">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Alcance</h2>
+                </div>
+                <div class="services-grid">
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h3>Pentesting Web / Red</h3>
+                        <p>Evaluación de seguridad en aplicaciones web e infraestructura de red interna y externa.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Hacking Ético</h3>
+                        <p>Identificación y análisis de vulnerabilidades con enfoque ético y profesional.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>OSINT</h3>
+                        <p>Investigación de fuentes abiertas y análisis de exposición digital.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-network-wired"></i>
+                        </div>
+                        <h3>Active Directory</h3>
+                        <p>Evaluación de seguridad en entornos de directorio activo y políticas de grupo.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Capacitación</h3>
+                        <p>Programas de formación especializada en ciberseguridad para equipos técnicos.</p>
+                    </div>
+                    <div class="service-card">
+                        <div class="service-icon">
+                            <i class="fas fa-first-aid"></i>
+                        </div>
+                        <h3>Respuesta a Incidentes</h3>
+                        <p>Contención, erradicación y recuperación ante incidentes de seguridad.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section id="location">
-        <h2>Ubicación</h2>
-        <p>Mundialmente presente.</p>
-    </section>
+        <section id="location">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Ubicación</h2>
+                </div>
+                <div class="location-content">
+                    <div class="location-text">
+                        <div class="content-card">
+                            <p>Con presencia global, ofrecemos nuestros servicios de ciberseguridad a organizaciones en todo el mundo, adaptándonos a las necesidades específicas de cada región y sector.</p>
+                        </div>
+                    </div>
+                    <div class="location-visual">
+                        <div class="scene">
+                            <div class="glow"></div>
+                            <div class="globe">
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                <div class="longitude"></div>
+                                
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                                <div class="latitude"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <section id="contact">
-        <h2>Contacto</h2>
-        <p>🕷️​ <a href="mailto:contacto.redspyder@gmail.com">Correo Electrónico</a></p>
-        <p>🕷️​ <a href="https://t.me/RedSpyderSecurity" target="_blank">Telegram</a></p>
-        <p>🕷️​ <a href="https://discord.gg/H5nW9ze5" target="_blank">Discord</a></p>
-        <p>🕷️ <a href="https://whatsapp.com/channel/0029VbB9MnuBqbr1pW8Wvv26" target="_blank">Canal de Whatsapp​</a></p>
-    </section>
+        <section id="contact">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Contacto</h2>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Correo Electrónico</h3>
+                            <a href="mailto:contacto.redspyder@gmail.com">contacto.redspyder@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-telegram"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Telegram</h3>
+                            <a href="https://t.me/RedSpyderSecurity" target="_blank">@RedSpyderSecurity</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-discord"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Discord</h3>
+                            <a href="https://discord.gg/H5nW9ze5" target="_blank">Unirse al servidor</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-whatsapp"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>WhatsApp</h3>
+                            <a href="https://whatsapp.com/channel/0029VbB9MnuBqbr1pW8Wvv26" target="_blank">Canal oficial</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
     <footer>
-        <p>© 2025 RedSpyder Security. Todos los derechos reservados.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <span><i class="fas fa-spider"></i></span>
+                    <h3>RedSpyder Security</h3>
+                </div>
+                <div class="copyright">
+                    <p>© 2025 RedSpyder Security. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const navButtons = document.getElementById('navButtons');
+        const overlay = document.getElementById('overlay');
+        
+        function toggleMenu() {
+            menuToggle.classList.toggle('active');
+            navButtons.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            document.body.style.overflow = navButtons.classList.contains('active') ? 'hidden' : '';
+        }
+        
+        menuToggle.addEventListener('click', toggleMenu);
+        overlay.addEventListener('click', toggleMenu);
+        
+        const navLinks = document.querySelectorAll('.nav-button');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    toggleMenu();
+                }
+            });
+        });
+        
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                menuToggle.classList.remove('active');
+                navButtons.classList.remove('active');
+                overlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+        
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+        
+        function createParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                const size = Math.random() * 5 + 2;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                particle.style.animationDuration = `${15 + Math.random() * 10}s`;
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+        
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        let ticking = false;
+        
+        function updateAnimations() {
+            ticking = false;
+        }
+        
+        window.addEventListener('scroll', function() {
+            if (!ticking) {
+                requestAnimationFrame(updateAnimations);
+                ticking = true;
+            }
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
