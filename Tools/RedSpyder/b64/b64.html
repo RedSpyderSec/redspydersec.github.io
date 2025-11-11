@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" type="image/x-icon" href="https://redspydersec.github.io/spyder.ico">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Decodificador Mágico de Base64 - Codifica y decodifica texto, imágenes, audio y video">
+    <meta name="author" content="gstxx (Ghostpyder)">
+    <title>Decodificador Mágico de Base64 - RedSpyder Security</title>
+    <link rel="stylesheet" href="https://redspydersec.github.io/style.css">
+    
+</head>
+<body>
+    <header>
+        <h1>Decodificador Mágico de Base64</h1>
+        <p>Codifica y decodifica texto, imágenes, audio, video y más.</p>
+        <nav>
+            <a href="https://redspydersec.github.io/Utils">← Volver al Inicio</a>
+        </nav>
+    </header>
+
+    <section class="card">
+        <h2>Decodificador de Base64 - RedSpyder Security</h2>
+        <p><strong>Codificador/Decodificador</strong> de Base64 (b64), una forma de codificar y decodificar cualquier valor, con un poco de magia de JavaScript por detrás, pero súper eficiente.</p>
+    </section>
+
+    <section class="card">
+        <h2>Codificador/Decodificador</h2>
+        <div class="decoder-container">
+            <div class="mode-selector">
+                <div class="mode-btn active" data-mode="text">Texto</div>
+                <div class="mode-btn" data-mode="file">Archivos</div>
+            </div>
+            
+            <div id="text-tab" class="tab-content active">
+                <div class="input-group">
+                    <label for="base64-input">Texto en Base64 o Texto Plano:</label>
+                    <textarea id="base64-input" class="decoder-textarea" placeholder="Ingresa tu texto codificado en Base64 o texto plano aquí..."></textarea>
+                </div>
+                <div class="decoder-btn-group">
+                    <button id="decode-btn" class="decoder-btn">Decodificar Base64</button>
+                    <button id="encode-btn" class="decoder-btn">Codificar a Base64</button>
+                    <button id="clear-btn" class="decoder-btn secondary">Limpiar</button>
+                </div>
+                
+                <div id="message" class="decoder-message"></div>
+                
+                <div class="result-container">
+                    <label for="decoded-output">Resultado:</label>
+                    <textarea id="decoded-output" class="decoder-textarea" readonly placeholder="El resultado aparecerá aquí..."></textarea>
+                    <button id="copy-btn" class="decoder-copy-btn">Copiar Resultado</button>
+                </div>
+            </div>
+            
+            <div id="file-tab" class="tab-content">
+                <div class="file-input-container">
+                    <label for="file-input">Selecciona un archivo para codificar:</label>
+                    <div class="file-input-wrapper">
+                        <input type="file" id="file-input" class="decoder-file-input" accept="image/*,audio/*,video/*,.txt,.pdf,.doc,.docx">
+                    </div>
+                </div>
+                
+                <div class="decoder-btn-group">
+                    <button id="encode-file-btn" class="decoder-btn">Codificar Archivo a Base64</button>
+                    <button id="decode-file-btn" class="decoder-btn">Decodificar Base64 a Archivo</button>
+                    <button id="clear-file-btn" class="decoder-btn secondary">Limpiar</button>
+                </div>
+                
+                <div id="file-message" class="decoder-message"></div>
+                
+                <div class="result-container">
+                    <label for="file-base64-output">Base64 del Archivo:</label>
+                    <textarea id="file-base64-output" class="decoder-textarea" readonly placeholder="El Base64 del archivo aparecerá aquí..."></textarea>
+                    <button id="copy-file-btn" class="decoder-copy-btn">Copiar Base64</button>
+                    
+                    <div class="preview-container" id="preview-container">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>© 2025 RedSpyder Security | contacto.redspyder@gmail.com</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const base64Input = document.getElementById('base64-input');
+            const decodedOutput = document.getElementById('decoded-output');
+            const decodeBtn = document.getElementById('decode-btn');
+            const encodeBtn = document.getElementById('encode-btn');
+            const clearBtn = document.getElementById('clear-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const message = document.getElementById('message');
+            
+            const fileInput = document.getElementById('file-input');
+            const encodeFileBtn = document.getElementById('encode-file-btn');
+            const decodeFileBtn = document.getElementById('decode-file-btn');
+            const clearFileBtn = document.getElementById('clear-file-btn');
+            const copyFileBtn = document.getElementById('copy-file-btn');
+            const fileBase64Output = document.getElementById('file-base64-output');
+            const fileMessage = document.getElementById('file-message');
+            const previewContainer = document.getElementById('preview-container');
+            
+            const modeBtns = document.querySelectorAll('.mode-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            modeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const mode = this.getAttribute('data-mode');
+                    
+                    modeBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    document.getElementById(`${mode}-tab`).classList.add('active');
+                });
+            });
+            
+            function decodeBase64() {
+                const input = base64Input.value.trim();
+                
+                message.textContent = '';
+                message.className = '';
+                
+                if (!input) {
+                    showMessage('Por favor, ingresa un texto en Base64', 'error', message);
+                    return;
+                }
+                
+                try {
+                    const decoded = atob(input);
+                    decodedOutput.value = decoded;
+                    showMessage('¡Texto decodificado exitosamente!', 'success', message);
+                } catch (error) {
+                    showMessage('Error: El texto ingresado no es un Base64 válido', 'error', message);
+                    decodedOutput.value = '';
+                }
+            }
+            
+            function encodeBase64() {
+                const input = base64Input.value;
+                
+                message.textContent = '';
+                message.className = '';
+                
+                if (!input) {
+                    showMessage('Por favor, ingresa un texto para codificar', 'error', message);
+                    return;
+                }
+                
+                try {
+                    const encoded = btoa(input);
+                    decodedOutput.value = encoded;
+                    showMessage('¡Texto codificado exitosamente!', 'success', message);
+                } catch (error) {
+                    showMessage('Error al codificar el texto', 'error', message);
+                    decodedOutput.value = '';
+                }
+            }
+            
+            function encodeFileToBase64() {
+                const file = fileInput.files[0];
+                
+                // Limpiar mensajes anteriores
+                fileMessage.textContent = '';
+                fileMessage.className = '';
+                previewContainer.innerHTML = '';
+                
+                if (!file) {
+                    showMessage('Por favor, selecciona un archivo', 'error', fileMessage);
+                    return;
+                }
+                
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    try {
+                        const base64 = e.target.result.split(',')[1];
+                        fileBase64Output.value = base64;
+                        
+                        showMessage(`¡Archivo "${file.name}" codificado exitosamente! Tamaño: ${formatFileSize(file.size)}`, 'success', fileMessage);
+                        
+                        showFilePreview(file, e.target.result);
+                    } catch (error) {
+                        showMessage('Error al codificar el archivo', 'error', fileMessage);
+                    }
+                };
+                
+                reader.onerror = function() {
+                    showMessage('Error al leer el archivo', 'error', fileMessage);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+            
+            function decodeBase64ToFile() {
+                const base64 = fileBase64Output.value.trim();
+                
+                fileMessage.textContent = '';
+                fileMessage.className = '';
+                previewContainer.innerHTML = '';
+                
+                if (!base64) {
+                    showMessage('Por favor, ingresa un Base64 para decodificar', 'error', fileMessage);
+                    return;
+                }
+                
+                try {
+                    const mimeType = detectMimeType(base64);
+                    
+                    const dataUrl = `data:${mimeType};base64,${base64}`;
+                    
+                    showDataUrlPreview(dataUrl, mimeType);
+                    
+                    showMessage('¡Base64 decodificado exitosamente!', 'success', fileMessage);
+                } catch (error) {
+                    showMessage('Error: El texto ingresado no es un Base64 válido', 'error', fileMessage);
+                }
+            }
+            
+            function detectMimeType(base64) {
+
+                let mimeType = 'text/plain';
+                
+                return mimeType;
+            }
+            
+            function showFilePreview(file, dataUrl) {
+                const fileType = file.type.split('/')[0];
+                
+                let previewElement = '';
+                
+                if (fileType === 'image') {
+                    previewElement = `<img src="${dataUrl}" alt="Vista previa" class="preview-image">`;
+                } else if (fileType === 'audio') {
+                    previewElement = `<audio controls class="preview-audio"><source src="${dataUrl}" type="${file.type}">Tu navegador no soporta el elemento de audio.</audio>`;
+                } else if (fileType === 'video') {
+                    previewElement = `<video controls class="preview-video"><source src="${dataUrl}" type="${file.type}">Tu navegador no soporta el elemento de video.</video>`;
+                } else {
+                    previewElement = `<div class="file-info">Tipo de archivo: ${file.type || 'Desconocido'}<br>Tamaño: ${formatFileSize(file.size)}</div>`;
+                }
+                
+                previewContainer.innerHTML = `
+                    <h4>Vista Previa:</h4>
+                    ${previewElement}
+                    <div class="file-info">Nombre: ${file.name}<br>Tamaño: ${formatFileSize(file.size)}<br>Tipo: ${file.type || 'Desconocido'}</div>
+                `;
+            }
+            
+            function showDataUrlPreview(dataUrl, mimeType) {
+                const fileType = mimeType.split('/')[0];
+                
+                let previewElement = '';
+                
+                if (fileType === 'image') {
+                    previewElement = `<img src="${dataUrl}" alt="Vista previa" class="preview-image">`;
+                } else if (fileType === 'audio') {
+                    previewElement = `<audio controls class="preview-audio"><source src="${dataUrl}" type="${mimeType}">Tu navegador no soporta el elemento de audio.</audio>`;
+                } else if (fileType === 'video') {
+                    previewElement = `<video controls class="preview-video"><source src="${dataUrl}" type="${mimeType}">Tu navegador no soporta el elemento de video.</video>`;
+                } else {
+                    try {
+                        const base64 = dataUrl.split(',')[1];
+                        const text = atob(base64);
+                        previewElement = `<div class="code-block">${text}</div>`;
+                    } catch (e) {
+                        previewElement = `<div class="file-info">Tipo de archivo: ${mimeType}</div>`;
+                    }
+                }
+                
+                previewContainer.innerHTML = `
+                    <h4>Vista Previa del Archivo Decodificado:</h4>
+                    ${previewElement}
+                    <div class="file-info">Tipo: ${mimeType}</div>
+                    <a href="${dataUrl}" download="archivo_decodificado" class="btn download-btn" style="margin-top:10px;">Descargar Archivo</a>
+                `;
+            }
+            
+
+            function showMessage(text, type, messageElement) {
+                messageElement.textContent = text;
+                messageElement.className = type;
+                messageElement.classList.add('decoder-message', type);
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+            
+            function clearTextFields() {
+                base64Input.value = '';
+                decodedOutput.value = '';
+                message.textContent = '';
+                message.className = '';
+            }
+            
+            function clearFileFields() {
+                fileInput.value = '';
+                fileBase64Output.value = '';
+                fileMessage.textContent = '';
+                fileMessage.className = '';
+                previewContainer.innerHTML = '';
+            }
+            
+            function copyTextResult() {
+                if (!decodedOutput.value) {
+                    showMessage('No hay resultado para copiar', 'error', message);
+                    return;
+                }
+                
+                decodedOutput.select();
+                document.execCommand('copy');
+                showMessage('¡Resultado copiado al portapapeles!', 'success', message);
+                
+                window.getSelection().removeAllRanges();
+            }
+            
+            function copyFileResult() {
+                if (!fileBase64Output.value) {
+                    showMessage('No hay Base64 para copiar', 'error', fileMessage);
+                    return;
+                }
+                
+                fileBase64Output.select();
+                document.execCommand('copy');
+                showMessage('¡Base64 copiado al portapapeles!', 'success', fileMessage);
+                
+                window.getSelection().removeAllRanges();
+            }
+            
+            decodeBtn.addEventListener('click', decodeBase64);
+            encodeBtn.addEventListener('click', encodeBase64);
+            clearBtn.addEventListener('click', clearTextFields);
+            copyBtn.addEventListener('click', copyTextResult);
+            
+            encodeFileBtn.addEventListener('click', encodeFileToBase64);
+            decodeFileBtn.addEventListener('click', decodeBase64ToFile);
+            clearFileBtn.addEventListener('click', clearFileFields);
+            copyFileBtn.addEventListener('click', copyFileResult);
+            
+            base64Input.addEventListener('keydown', function(e) {
+                if (e.ctrlKey && e.key === 'Enter') {
+                    decodeBase64();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
