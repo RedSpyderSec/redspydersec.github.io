@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>WebRTC IP Leak Detector</title>
+    <style>
+        body {
+            background-color: #0d0208;
+            color: #00ff41;
+            font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            padding: 25px;
+            font-size: 14px;
+            margin: 0;
+        }
+        h1 {
+            color: #ff004f;
+            text-shadow: 0 0 5px #ff004f;
+            border-bottom: 2px solid #00ff41;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        #terminal {
+            width: 100%;
+            height: 500px;
+            background-color: #000;
+            border: 1px solid #00ff41;
+            box-shadow: 0 0 10px #00ff41;
+            overflow-y: scroll;
+            padding: 10px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+        .info { color: #f0f0f0; }
+        .success { color: #00ff41; }
+        .warning { color: #ff004f; }
+        .highlight { color: #ffff00; }
+        .data { color: #00bfff; }
+        
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .stat-box {
+            background-color: #001a00;
+            border: 1px solid #00ff41;
+            padding: 10px;
+            min-width: 200px;
+            flex-grow: 1;
+        }
+        .stat-title {
+            font-weight: bold;
+            border-bottom: 1px solid #00ff41;
+            margin-bottom: 5px;
+            padding-bottom: 5px;
+        }
+        
+        .controls {
+            margin-bottom: 15px;
+        }
+        button {
+            background-color: #001a00;
+            color: #00ff41;
+            border: 1px solid #00ff41;
+            padding: 8px 15px;
+            cursor: pointer;
+            font-family: 'Consolas', 'Menlo', 'Monaco', 'Courier New', monospace;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+        button:hover {
+            background-color: #003300;
+            box-shadow: 0 0 5px #00ff41;
+        }
+        
+        #progress {
+            width: 100%;
+            height: 10px;
+            background-color: #001a00;
+            margin: 10px 0;
+        }
+        #progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #00ff41;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>[WebRTC IP Leak Detector]</h1>
+    
+    <div class="controls">
+        <button id="startBtn">Iniciar Detección</button>
+        <button id="stopBtn" disabled>Detener</button>
+        <button id="exportBtn">Exportar Datos</button>
+        <button id="clearBtn">Limpiar</button>
+    </div>
+    
+    <div id="progress">
+        <div id="progress-bar"></div>
+    </div>
+    
+    <div class="stats-container">
+        <div class="stat-box">
+            <div class="stat-title">Estadísticas</div>
+            <div>Candidatos totales: <span id="totalCandidates">0</span></div>
+            <div>IPs públicas encontradas: <span id="publicIPs">0</span></div>
+            <div>IPs locales encontradas: <span id="localIPs">0</span></div>
+            <div>IPv6 encontradas: <span id="ipv6Count">0</span></div>
+        </div>
+        
+        <div class="stat-box">
+            <div class="stat-title">Información del Navegador</div>
+            <div>User Agent: <span id="userAgent"></span></div>
+            <div>WebRTC disponible: <span id="webrtcStatus"></span></div>
+            <div>Estado conexión: <span id="connectionStatus">No iniciada</span></div>
+        </div>
+    </div>
+    
+    <p class="info">> Iniciando análisis de fugas WebRTC...</p>
+    <p class="info">> Se mostrarán todos los candidatos ICE detectados, incluyendo IPs públicas y locales.</p>
+    
+    <div id="terminal">
+        <pre id="output"></pre>
+    </div>
+
+    <script>
+        let peerConnection = null;
+        let dataChannel = null;
+        let isRunning = false;
+        let stats = {
+            totalCandidates: 0,
+            publicIPs: 0,
+            localIPs: 0,
+            ipv6Count: 0,
+            uniqueIPs: new Set(),
+            candidatesByType: {
+                host: 0,
+                srflx: 0,
+                prflx: 0,
+                relay: 0
+            }
+        };
+        
+        const output = document.getElementById('output');
+        const startBtn = document.getElementById('startBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const clearBtn = document.getElementById('clearBtn');
+        const progressBar = document.getElementById('progress-bar');
+        
+        document.getElementById('userAgent').textContent = navigator.userAgent;
+        document.getElementById('webrtcStatus').textContent = 
+            window.RTCPeerConnection ? "Sí" : "No";
+        
+        function logToTerminal(message, className = 'info') {
+            output.innerHTML += `<span class="${className}">${message}</span>\n`;
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function updateStats() {
+            document.getElementById('totalCandidates').textContent = stats.totalCandidates;
+            document.getElementById('publicIPs').textContent = stats.publicIPs;
+            document.getElementById('localIPs').textContent = stats.localIPs;
+            document.getElementById('ipv6Count').textContent = stats.ipv6Count;
+        }
+        
+        function analyzeCandidate(candidateString) {
+            stats.totalCandidates++;
+            
+            const parts = candidateString.split(' ');
+            const foundation = parts[0].split(':')[1];
+            const componentId = parts[1];
+            const protocol = parts[2];
+            const priority = parts[3];
+            const ip = parts[4];
+            const port = parts[5];
+            const type = parts[7];
+            
+            if (stats.candidatesByType.hasOwnProperty(type)) {
+                stats.candidatesByType[type]++;
+            }
+            
+            const isNewIP = !stats.uniqueIPs.has(ip);
+            if (isNewIP) {
+                stats.uniqueIPs.add(ip);
+                
+                // Clasificar IP
+                if (isPublicIP(ip)) {
+                    stats.publicIPs++;
+                    logToTerminal(`[ALERTA] IP PÚBLICA DETECTADA: ${ip} (${type})`, 'warning');
+                } else if (isLocalIP(ip)) {
+                    stats.localIPs++;
+                    logToTerminal(`[INFO] IP LOCAL DETECTADA: ${ip} (${type})`, 'data');
+                }
+                
+                // Contar IPv6
+                if (isIPv6(ip)) {
+                    stats.ipv6Count++;
+                }
+            }
+            
+            logToTerminal(`[CANDIDATO ${stats.totalCandidates}] Tipo: ${type}, IP: ${ip}, Puerto: ${port}, Protocolo: ${protocol}, Prioridad: ${priority}`, 'success');
+            
+            if (type === 'srflx' || type === 'relay') {
+                logToTerminal(`   ↳ Este candidato revela tu IP pública a través de un servidor ${type === 'srflx' ? 'STUN' : 'TURN'}`, 'highlight');
+            }
+            
+            updateStats();
+            updateProgress();
+        }
+        
+        function isPublicIP(ip) {
+            // IPv4
+            if (ip.includes('.')) {
+                const parts = ip.split('.');
+                const first = parseInt(parts[0]);
+                const second = parseInt(parts[1]);
+                
+                if (first === 10) return false;
+                if (first === 172 && second >= 16 && second <= 31) return false;
+                if (first === 192 && second === 168) return false;
+                if (first === 169 && second === 254) return false; // Link-local
+                
+                return true;
+            }
+            
+            if (ip.includes(':')) {
+                if (ip.startsWith('fc00:') || ip.startsWith('fd00:')) return false; // Unique Local
+                if (ip.startsWith('fe80:')) return false; // Link-local
+                if (ip.startsWith('2001:0:')) return false; // Teredo
+                if (ip.startsWith('2001:db8:')) return false; // Documentation
+                
+                return true;
+            }
+            
+            return false;
+        }
+        
+        function isLocalIP(ip) {
+            return !isPublicIP(ip);
+        }
+        
+        function isIPv6(ip) {
+            return ip.includes(':');
+        }
+        
+        function updateProgress() {
+            const progress = Math.min(100, (stats.totalCandidates / 30) * 100);
+            progressBar.style.width = `${progress}%`;
+        }
+        
+        function startDetection() {
+            if (isRunning) return;
+            
+            isRunning = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            document.getElementById('connectionStatus').textContent = 'Conectando...';
+            document.getElementById('connectionStatus').className = 'warning';
+            
+            logToTerminal('[SISTEMA] Iniciando detección de fugas WebRTC...', 'info');
+            logToTerminal('[SISTEMA] Creando múltiples conexiones RTCPeerConnection...', 'info');
+            
+            stats = {
+                totalCandidates: 0,
+                publicIPs: 0,
+                localIPs: 0,
+                ipv6Count: 0,
+                uniqueIPs: new Set(),
+                candidatesByType: {
+                    host: 0,
+                    srflx: 0,
+                    prflx: 0,
+                    relay: 0
+                }
+            };
+            updateStats();
+            progressBar.style.width = '0%';
+            
+            createConnections();
+        }
+        
+        function createConnections() {
+            const serverConfigs = [
+                { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }] },
+                { iceServers: [{ urls: 'stun:stun1.l.google.com:19302' }] },
+                { iceServers: [{ urls: 'stun:stun2.l.google.com:19302' }] },
+                { iceServers: [{ urls: 'stun:stun3.l.google.com:19302' }] },
+                { iceServers: [{ urls: 'stun:stun4.l.google.com:19302' }] },
+                { 
+                    iceServers: [
+                        { urls: 'stun:stun.l.google.com:19302' },
+                        { urls: 'stun:stun.services.mozilla.com' }
+                    ] 
+                }
+            ];
+            
+            let connectionsCreated = 0;
+            const maxConnections = serverConfigs.length;
+            
+            serverConfigs.forEach(config => {
+                try {
+                    const pc = new RTCPeerConnection(config);
+                    
+                    pc.onicecandidate = (event) => {
+                        if (!event.candidate) {
+                            logToTerminal(`[SISTEMA] Conexión ${connectionsCreated + 1}: Fin de candidatos ICE`, 'info');
+                            return;
+                        }
+                        
+                        analyzeCandidate(event.candidate.candidate);
+                    };
+                    
+                    const dc = pc.createDataChannel('test');
+                    dc.onopen = () => {
+                        logToTerminal(`[SISTEMA] Canal de datos abierto en conexión ${connectionsCreated + 1}`, 'success');
+                    };
+                    
+                    pc.createOffer()
+                        .then(offer => {
+                            return pc.setLocalDescription(offer);
+                        })
+                        .then(() => {
+                            connectionsCreated++;
+                            logToTerminal(`[SISTEMA] Conexión ${connectionsCreated}/${maxConnections} establecida`, 'success');
+                            
+                            if (connectionsCreated === maxConnections) {
+                                document.getElementById('connectionStatus').textContent = 'Conectado';
+                                document.getElementById('connectionStatus').className = 'success';
+                                logToTerminal('[SISTEMA] Todas las conexiones establecidas. Analizando candidatos...', 'success');
+                            }
+                        })
+                        .catch(err => {
+                            logToTerminal(`[ERROR] Error al crear oferta: ${err.message}`, 'warning');
+                        });
+                    
+                    if (!peerConnection) {
+                        peerConnection = pc;
+                        dataChannel = dc;
+                    }
+                } catch (err) {
+                    logToTerminal(`[ERROR] No se pudo crear RTCPeerConnection: ${err.message}`, 'warning');
+                }
+            });
+        }
+        
+        function stopDetection() {
+            if (!isRunning) return;
+            
+            isRunning = false;
+            startBtn.disabled = false;
+            stopBtn.disabled = true;
+            document.getElementById('connectionStatus').textContent = 'Detenida';
+            document.getElementById('connectionStatus').className = 'warning';
+            
+            if (peerConnection) {
+                peerConnection.close();
+                peerConnection = null;
+            }
+            
+            logToTerminal('[SISTEMA] Detección detenida por el usuario', 'info');
+            
+            logToTerminal('[RESUMEN] === RESULTADOS DEL ANÁLISIS ===', 'highlight');
+            logToTerminal(`[RESUMEN] Total de candidatos ICE: ${stats.totalCandidates}`, 'info');
+            logToTerminal(`[RESUMEN] IPs públicas encontradas: ${stats.publicIPs}`, stats.publicIPs > 0 ? 'warning' : 'success');
+            logToTerminal(`[RESUMEN] IPs locales encontradas: ${stats.localIPs}`, 'info');
+            logToTerminal(`[RESUMEN] IPs únicas detectadas: ${stats.uniqueIPs.size}`, 'info');
+            logToTerminal('[RESUMEN] Distribución por tipo:', 'info');
+            for (const type in stats.candidatesByType) {
+                logToTerminal(`[RESUMEN]   - ${type}: ${stats.candidatesByType[type]}`, 'data');
+            }
+        }
+        
+        function exportData() {
+            const data = {
+                userAgent: navigator.userAgent,
+                timestamp: new Date().toISOString(),
+                stats: stats,
+                uniqueIPs: Array.from(stats.uniqueIPs)
+            };
+            
+            const dataStr = JSON.stringify(data, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const url = URL.createObjectURL(dataBlob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `webrtc-leak-${new Date().getTime()}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);
+            
+            logToTerminal('[SISTEMA] Datos exportados correctamente', 'success');
+        }
+        
+        function clearTerminal() {
+            output.innerHTML = '';
+            logToTerminal('[SISTEMA] Terminal limpiada', 'info');
+        }
+        
+        startBtn.addEventListener('click', startDetection);
+        stopBtn.addEventListener('click', stopDetection);
+        exportBtn.addEventListener('click', exportData);
+        clearBtn.addEventListener('click', clearTerminal);
+        
+        window.addEventListener('load', () => {
+            logToTerminal('[SISTEMA] WebRTC IP Leak Detector cargado', 'success');
+            logToTerminal('[SISTEMA] Presiona "Iniciar Detección" para comenzar', 'info');
+        });
+    </script>
+
+</body>
+</html>
