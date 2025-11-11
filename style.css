@@ -268,24 +268,6 @@ a:hover {
     margin: 20px 0;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
-
-.feature-list {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.feature-list li {
-    margin-bottom: 10px;
-    padding-left: 25px;
-    position: relative;
-}
-
-.feature-list li:before {
-    content: "🕷️";
-    position: absolute;
-    left: 0;
-}
-
 .code-block {
     background-color: #0d0d1a;
     border-left: 4px solid #e94560;
@@ -791,3 +773,4 @@ footer {
         font-size: 0.85rem;
     }
 }
+
