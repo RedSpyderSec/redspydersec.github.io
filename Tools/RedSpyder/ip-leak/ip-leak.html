@@ -419,7 +419,7 @@
             if (showSummary) {
                 logToTerminal('[RESUMEN] === RESULTADOS FINALES (MÁXIMA EXTRACCIÓN) ===', 'highlight');
                 logToTerminal(`[RESUMEN] IPs Únicas Totales: ${stats.uniqueIPs.size}`, 'info');
-                logToTerminal(`[RESUMEN] **IPs PÚBLICAS** (Fuga potencial): ${stats.publicIPs}`, stats.publicIPs > 0 ? 'warning' : 'success');
+                logToTerminal(`[RESUMEN] IPs PÚBLICAS-BETA (Fuga potencial): ${stats.publicIPs}`, stats.publicIPs > 0 ? 'warning' : 'success');
                 logToTerminal(`[RESUMEN] IPs locales (Host): ${stats.localIPs}`, 'info');
                 logToTerminal(`[RESUMEN] Tipos detectados: Host:${stats.candidatesByType.host}, Srflx:${stats.candidatesByType.srflx}, Prflx:${stats.candidatesByType.prflx}, Relay:${stats.candidatesByType.relay}`, 'data');
             }
