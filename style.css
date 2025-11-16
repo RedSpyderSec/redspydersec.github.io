@@ -1170,3 +1170,106 @@ pre {
     font-size: 2.5rem;
     text-shadow: 0 0 10px rgba(230, 0, 18, 0.5);
 }
+
+/*Aparte*/
+.tool-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    margin-top: 30px;
+    border-left: 5px solid var(--primary);
+}
+
+#liveHash {
+    width: 100%; 
+}
+
+#listInput {
+    width: 100%; 
+    height: 140px; 
+    resize: vertical;
+}
+
+textarea, button, input[type="text"] {
+    padding: 15px; 
+    font-size: 1rem; 
+    background: #111; 
+    border: 1px solid #333; 
+    color: var(--light);
+    font-family: monospace;
+    border-radius: 8px; 
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+}
+
+textarea:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(230, 0, 18, 0.3);
+}
+
+.hash-btn {
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 1rem;
+    margin-top: 15px;
+}
+
+.hash-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(230, 0, 18, 0.6);
+}
+
+#results {
+    margin-top: 25px;
+    padding: 20px;
+    width: 100%; 
+    background: var(--card-bg); 
+    border: 1px solid var(--primary); 
+    white-space: pre-wrap;
+    border-radius: 10px;
+    font-family: monospace;
+    color: var(--green-medium);
+    min-height: 100px;
+    box-shadow: 0 0 15px rgba(230, 0, 18, 0.2);
+}
+
+.confidence-high { color: var(--green-medium); }
+.confidence-medium { color: var(--yellow); }
+.confidence-low { color: var(--primary); }
+.confidence-unknown { color: var(--gray); }
+
+.tool-card h3 {
+    color: var(--light);
+    font-size: 1.2rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    border-left: 3px solid var(--primary);
+    padding-left: 10px;
+}
+
+.result-item {
+    margin: 10px 0;
+    padding: 8px;
+    border-left: 3px solid;
+    background: rgba(255,255,255,0.05);
+}
+
+.result-primary {
+    border-left-color: var(--green-medium);
+    font-weight: bold;
+}
+
+.result-alternative {
+    border-left-color: var(--yellow);
+    margin-left: 20px;
+    font-size: 0.9em;
+}
